@@ -150,6 +150,10 @@ Nano|NanoSD|Nano2GB)
                         ;;
                 esac
                 ;;
+
+        NV_DevKit_OrinNano)
+                DT_CAM_FILE=$DT_CAM_DIR/NV_DevKit_OrinNano/tegra234-camera-vc-mipi-cam.dtsi
+                ;;
         *)
                 echo "Carrier board $VC_MIPI_BOARD not supported!"
                 ;;
