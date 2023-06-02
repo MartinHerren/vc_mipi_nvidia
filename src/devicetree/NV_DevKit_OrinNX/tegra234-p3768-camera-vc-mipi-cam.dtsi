@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020-2022, Vision Components GmbH.  All rights reserved.
+ * Copyright (c) 2023, Ecorobotix.  All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -204,6 +205,7 @@
 				// You don't have to change any settings if just want to use the V4L API.
 				mode0 {
 					num_lanes                = NUM_LANES;
+          lane_polarity            = "6";
 					tegra_sinterface         = "serial_a";
 					embedded_metadata_height = VC_MIPI_METADATA_H;
 					readout_orientation      = "0";
@@ -307,6 +309,7 @@
 				// You don't have to change any settings if just want to use the V4L API.
 				mode0 {
 					num_lanes                = NUM_LANES;
+          lane_polarity            = "0";
 					tegra_sinterface         = "serial_c";
 					embedded_metadata_height = VC_MIPI_METADATA_H;
 					readout_orientation      = "0";
@@ -458,9 +461,9 @@
 	};
 };
 
-#define CAM0_PWDN     TEGRA194_MAIN_GPIO(P, 4)
-#define CAM1_PWDN     TEGRA194_MAIN_GPIO(P, 5)
-#define CAM_I2C_MUX   TEGRA194_AON_GPIO(CC, 3)
+#define CAM0_PWDN	    TEGRA234_MAIN_GPIO(H, 6)
+#define CAM1_PWDN	    TEGRA234_MAIN_GPIO(AC, 0)
+#define CAM_I2C_MUX   TEGRA234_AON_GPIO(CC, 3)
 
 / {
 	cam_i2cmux {
