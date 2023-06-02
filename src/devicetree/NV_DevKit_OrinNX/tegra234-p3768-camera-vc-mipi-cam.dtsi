@@ -28,7 +28,7 @@
 // -----+------------------------------------------------------------------------------------------
 //  1   | OV7251, IMX296, IMX297
 //  2   | OV9281, IMX264, IMX265
-//  2,4 | IMX178, IMX183, IMX226, IMX250, IMX252, IMX273, IMX290, IMX327, IMX335, IMX392, 
+//  2,4 | IMX178, IMX183, IMX226, IMX250, IMX252, IMX273, IMX290, IMX327, IMX335, IMX392,
 //      | IMX412, IMX415, IMX568
 // -----+------------------------------------------------------------------------------------------
 #define VC_MIPI_LANES       2   // 1, 2 Lanes
@@ -50,20 +50,20 @@
 // ------------------------------------------------------------------------------------------------
 //  GStreamer Support
 // ------------------------------------------------------------------------------------------------
-//  If you want to use GStreamer with nvarguscamerasrc you have to adjust this settings in the 
-//  device tree below. The sections which have to be modified are marked by a comment. 
-//  To find the correct parameter values please follow the instruction in the main README.md of 
+//  If you want to use GStreamer with nvarguscamerasrc you have to adjust this settings in the
+//  device tree below. The sections which have to be modified are marked by a comment.
+//  To find the correct parameter values please follow the instruction in the main README.md of
 //  this repository https://github.com/VC-MIPI-modules/vc_mipi_nvidia#gstreamer-support
 // ------------------------------------------------------------------------------------------------
 
 #if VC_MIPI_LANES == 1
     #define BUS_WIDTH 1
-    #define NUM_LANES "1" 
+    #define NUM_LANES "1"
     #define NUM_CSI_LANES 2
 #endif
 #if VC_MIPI_LANES == 2
     #define BUS_WIDTH 2
-    #define NUM_LANES "2" 
+    #define NUM_LANES "2"
     #define NUM_CSI_LANES 4
 #endif
 
@@ -210,7 +210,7 @@
 
 					// ----------------------------------------------------
 					// If you want to use GStreamer with nvarguscamerasrc
-					// you have to adjust this settings. 
+					// you have to adjust this settings.
 					active_l                 = "0";
 					active_t                 = "0";
 					active_w                 = "0";
@@ -313,7 +313,7 @@
 
 					// ----------------------------------------------------
 					// If you want to use GStreamer with nvarguscamerasrc
-					// you have to adjust this settings. 
+					// you have to adjust this settings.
 					active_l                 = "0";
 					active_t                 = "0";
 					active_w                 = "0";
@@ -416,10 +416,10 @@
 					pcl_id = "v4l2_sensor";
 #if VC_MIPI_MANUFACTURER == 1
 					devname = "vc_mipi 9-001a";
-					proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@0/vc_mipi@1a";
+          proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@0/vc_mipi@1a";
 #else
-                    devname = "vc_mipi 9-0060";
-                    proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@0/vc_mipi@60";
+          devname = "vc_mipi 9-0060";
+          proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@0/vc_mipi@60";
 #endif
 				};
 				cam_module0_drivernode1: drivernode1 {
@@ -440,12 +440,12 @@
 					status = "okay";
 					pcl_id = "v4l2_sensor";
 #if VC_MIPI_MANUFACTURER == 1
-				devname = "vc_mipi 10-001a";
-                    		proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@1/vc_mipi@1a";
+				  devname = "vc_mipi 10-001a";
+          proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@1/vc_mipi@1a";
 #else
-                    		devname = "vc_mipi 10-0060";
-                    		proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@1/vc_mipi@60";
-#endif				
+          devname = "vc_mipi 10-0060";
+          proc-device-tree = "/proc/device-tree/cam_i2cmux/i2c@1/vc_mipi@60";
+#endif
 				};
 				cam_module1_drivernode1: drivernode1 {
 					status = "okay";
@@ -495,9 +495,9 @@
 #if VC_MIPI_MANUFACTURER == 1
 			vc_mipi@1a {
 #else
-            		vc_mipi@60 {
+      vc_mipi@60 {
 #endif
-                		status = "okay";
+        status = "okay";
 				reset-gpios = <&tegra_main_gpio CAM1_PWDN GPIO_ACTIVE_HIGH>;
 			};
 		};
