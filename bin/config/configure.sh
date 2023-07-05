@@ -63,16 +63,87 @@ else
 fi
 
 PATCHES=('kernel_common_32.3.1+')
+DT_CAM_FILE=()
+DT_CAM_FILE_DST_DIR=()
+case $VC_MIPI_SOM in
+Nano|NanoSD|Nano2GB)
+        case $VC_MIPI_BSP in
+        32.5.0|32.5.1|32.5.2)
+                PATCHES+=('kernel_Nano_32.5.0+')
+                ;;
+        32.6.1|32.7.1|32.7.2|32.7.3)
+                PATCHES+=('kernel_Nano_32.6.1+')
+                ;;
+        esac
+
+        # DT_CAM_FILE=$DT_CAM_DIR/NV_DevKit_Nano/tegra210-camera-vc-mipi-cam.dtsi
+
+        DT_CAM_FILE=(
+                "$DT_CAM_DIR/Auvidea_JNX30_Nano/tegra210-camera-vc-mipi-cam.dtsi")
+        DT_CAM_FILE_DST_DIR=(
+                "$KERNEL_SOURCE/hardware/nvidia/platform/t210/porg/kernel-dts/porg-platforms")
+        ;;
+
+AGXXavier|XavierNX|XavierNXSD|TX2|TX2i)
+        case $VC_MIPI_BSP in
+        32.3.1)
+                PATCHES+=('kernel_Xavier_32.3.1+')
+                ;;
+        32.5.0|32.5.1|32.5.2)
+                PATCHES+=('kernel_Xavier_32.5.0+')
+                ;;
+        32.6.1|32.7.1|32.7.2)
+                PATCHES+=('kernel_Xavier_32.6.1+')
+                ;;
+        32.7.3)
+                PATCHES+=('kernel_Xavier_32.7.3+')
+                ;;
+        35.1.0)
+                PATCHES+=('kernel_Xavier_35.1.0+')
+                ;;
+        35.2.1)
+                PATCHES+=('kernel_Xavier_35.2.1+')
+                ;;
+        35.3.1)
+                PATCHES+=('kernel_Xavier_35.3.1+')
+                ;;
+        esac
+
+        # DT_CAM_FILE         = $DT_CAM_DIR/NV_DevKit_XavierNX/tegra194-camera-vc-mipi-cam.dtsi
+        # DT_CAM_FILE_DST_DIR = $KERNEL_SOURCE/hardware/nvidia/platform/t19x/jakku/kernel-dts/common
+        # DT_CAM_FILE         = $DT_CAM_DIR/NV_DevKit_OrinNano/tegra234-p3768-camera-vc-mipi-cam.dtsi
+        # DT_CAM_FILE_DST_DIR = $KERNEL_SOURCE/hardware/nvidia/platform/t23x/p3768/kernel-dts/cvb/
+
+        case $VC_MIPI_BSP in
+        32.5.0|32.5.1|32.5.2|32.6.1|32.7.1|32.7.2|32.7.3)
+                DT_CAM_FILE=(
+                        "$DT_CAM_DIR/Auvidea_J20_AGXXavier/tegra194-camera-vc-mipi-cam.dtsi" \
+                        "$DT_CAM_DIR/Auvidea_JNX30_XavierNX/tegra194-camera-vc-mipi-cam.dtsi" \
+                        "$DT_CAM_DIR/Auvidea_J20_TX2/tegra186-camera-vc-mipi-cam.dtsi")
+                DT_CAM_FILE_DST_DIR=(
+                        "$KERNEL_SOURCE/hardware/nvidia/platform/t19x/common/kernel-dts/t19x-common-modules" \
+                        "$KERNEL_SOURCE/hardware/nvidia/platform/t19x/jakku/kernel-dts/common" \
+                        "$KERNEL_SOURCE/hardware/nvidia/platform/t18x/common/kernel-dts/t18x-common-modules")
+                ;;
+        35.1.0|35.2.1|35.3.1)
+                DT_CAM_FILE=(
+                        "$DT_CAM_DIR/Auvidea_J20_AGXXavier/tegra194-camera-vc-mipi-cam.dtsi" \
+                        "$DT_CAM_DIR/Auvidea_JNX30_XavierNX/tegra194-camera-vc-mipi-cam.dtsi")
+                DT_CAM_FILE_DST_DIR=(
+                        "$KERNEL_SOURCE/hardware/nvidia/platform/t19x/common/kernel-dts/t19x-common-modules" \
+                        "$KERNEL_SOURCE/hardware/nvidia/platform/t19x/jakku/kernel-dts/common")
+                ;;
+        esac
+        ;;
+esac
 
 case $VC_MIPI_SOM in
 Nano|NanoSD|Nano2GB)
         # Carrier board dependant settings
         case $VC_MIPI_BOARD in
         NV_DevKit_Nano)
-                DT_CAM_FILE=$DT_CAM_DIR/NV_DevKit_Nano/tegra210-camera-vc-mipi-cam.dtsi
                 ;;
         Auvidea_JNX30)
-                DT_CAM_FILE=$DT_CAM_DIR/Auvidea_JNX30_Nano/tegra210-camera-vc-mipi-cam.dtsi
                 case $VC_MIPI_BSP in
                 32.5.0|32.5.1|32.5.2|32.6.1|32.7.1|32.7.2|32.7.3)
                         PATCHES+=('dt_Auvidea_JNX30_Nano_32.5.0+')
@@ -85,34 +156,26 @@ Nano|NanoSD|Nano2GB)
         esac
 
         # Carrier board independant settings
-        PATCHES+=('kernel_Nano_32.5.0+')
-        DT_CAM_FILE_DST_DIR=$KERNEL_SOURCE/hardware/nvidia/platform/t210/porg/kernel-dts/porg-platforms
-
         FLASH_DT='DTB'
         case $VC_MIPI_SOM in
-        Nano)   FLASH_BOARD='jetson-nano-emmc' ;;
+        Nano)           FLASH_BOARD='jetson-nano-emmc' ;;
         NanoSD|Nano2GB) FLASH_BOARD='jetson-nano-qspi-sd' ;;
         esac
         FLASH_PARTITION='mmcblk0p1'
+        ;;
 
-        case $VC_MIPI_BSP in
-        32.5.0|32.5.1|32.5.2)
-                PATCHES+=('dt_camera_Nano_32.5.0+')
-                ;;
-        32.6.1|32.7.1|32.7.2|32.7.3)
-                PATCHES+=('dt_camera_Nano_32.6.1+')
-                ;;
-        esac
+AGXXavier)
+        FLASH_DT='kernel-dtb'
+        FLASH_BOARD='jetson-xavier'
+        FLASH_PARTITION='mmcblk0p1'
         ;;
 
 XavierNX|XavierNXSD)
         # Carrier board dependant settings
         case $VC_MIPI_BOARD in
         NV_DevKit_XavierNX)
-                DT_CAM_FILE=$DT_CAM_DIR/NV_DevKit_XavierNX/tegra194-camera-vc-mipi-cam.dtsi
                 ;;
         Auvidea_JNX30)
-                DT_CAM_FILE=$DT_CAM_DIR/Auvidea_JNX30_XavierNX/tegra194-camera-vc-mipi-cam.dtsi
                 case $VC_MIPI_BSP in
                 32.5.0|32.5.1|32.5.2|32.6.1|32.7.1|32.7.2|32.7.3)
                         PATCHES+=('dt_Auvidea_JNX30_XavierNX_32.5.0+')
@@ -127,125 +190,26 @@ XavierNX|XavierNXSD)
         esac
 
         # Carrier board independant settings
-        case $VC_MIPI_BSP in
-        32.5.0|32.5.1|32.5.2)
-                PATCHES+=('kernel_Xavier_32.5.0+')
-                ;;
-        32.6.1|32.7.1|32.7.2|32.7.3)
-                PATCHES+=('kernel_Xavier_32.6.1+')
-                ;;
-        35.1.0)
-                PATCHES+=('kernel_Xavier_35.1.0+')
-                ;;
-        35.2.1|35.3.1)
-                PATCHES+=('kernel_Xavier_35.2.1+')
-                ;;
-        esac
-        DT_CAM_FILE_DST_DIR=$KERNEL_SOURCE/hardware/nvidia/platform/t19x/jakku/kernel-dts/common/
-
         FLASH_DT='kernel-dtb'
         case $VC_MIPI_SOM in
         XavierNX)   FLASH_BOARD='jetson-xavier-nx-devkit-emmc' ;;
         XavierNXSD) FLASH_BOARD='jetson-xavier-nx-devkit' ;;
         esac
         FLASH_PARTITION='mmcblk0p1'
-
-        case $VC_MIPI_BSP in
-        32.5.0|32.5.1|32.5.2)
-                PATCHES+=('dt_camera_XavierNX_32.5.0+')
-                ;;
-        32.6.1|32.7.1|32.7.2|32.7.3)
-                PATCHES+=('dt_camera_XavierNX_32.6.1+')
-                ;;
-        35.1.0|35.2.1|35.3.1)
-                PATCHES+=('dt_camera_XavierNX_35.1.0+')
-                ;;
-        esac
         ;;
 
-AGXXavier)
-	echo "checking dt_cam_ versions"
-        case $VC_MIPI_BSP in
-        32.3.1|32.5.0|32.5.1|32.5.2|32.6.1|32.7.1|32.7.2|32.7.3)
-                PATCHES+=('dt_camera_AGXXavier_32.3.1+')
-                ;;
-        35.1.0|35.2.1|35.3.1)
-                PATCHES+=('dt_camera_AGXXavier_35.1.0+')
-                ;;
-        esac
-
-        case $VC_MIPI_BSP in
-        32.3.1)
-                PATCHES+=('kernel_Xavier_32.3.1+')
-                ;;
-        32.5.0|32.5.1|32.5.2)
-                PATCHES+=('kernel_Xavier_32.5.0+')
-                ;;
-        32.6.1|32.7.1|32.7.2|32.7.3)
-                PATCHES+=('kernel_Xavier_32.6.1+')
-                ;;
-        35.1.0)
-                PATCHES+=('kernel_Xavier_35.1.0+')
-                ;;
-        35.2.1|35.3.1)
-                PATCHES+=('kernel_Xavier_35.2.1+')
-                ;;
-        esac
-        DT_CAM_FILE=$DT_CAM_DIR/Auvidea_J20_AGXXavier/tegra194-camera-vc-mipi-cam.dtsi
-        DT_CAM_FILE_DST_DIR=$KERNEL_SOURCE/hardware/nvidia/platform/t19x/common/kernel-dts/t19x-common-modules
-        FLASH_DT='kernel-dtb'
-        FLASH_BOARD='jetson-xavier'
-        FLASH_PARTITION='mmcblk0p1'
-        ;;
-
-TX2)
-        PATCHES+=('dt_camera_TX2_32.5.0+')
-        case $VC_MIPI_BSP in
-        32.5.0|32.5.1|32.5.2)
-                PATCHES+=('kernel_TX2_32.5.0+')
-                ;;
-        32.6.1|32.7.1|32.7.2|32.7.3)
-                PATCHES+=('kernel_TX2_32.6.1+')
-                ;;
-        esac
-        DT_CAM_FILE=$DT_CAM_DIR/Auvidea_J20_TX2/tegra186-camera-vc-mipi-cam.dtsi
-        DT_CAM_FILE_DST_DIR=$KERNEL_SOURCE/hardware/nvidia/platform/t18x/common/kernel-dts/t18x-common-modules
+TX2|TX2i)
+        # Carrier board independant settings
         FLASH_DT='kernel-dtb'
         FLASH_BOARD='jetson-tx2'
         FLASH_PARTITION='mmcblk0p1'
         ;;
 
 OrinNano)
-        # Carrier board dependant settings
-        case $VC_MIPI_BOARD in
-        NV_DevKit_OrinNano)
-                DT_CAM_FILE=$DT_CAM_DIR/NV_DevKit_OrinNano/tegra234-p3768-camera-vc-mipi-cam.dtsi
-                ;;
-        *)
-                echo "Carrier board $VC_MIPI_BOARD not supported!"
-                ;;
-        esac
-
         # Carrier board independant settings
-        case $VC_MIPI_BSP in
-        35.3.1)
-                PATCHES+=('kernel_Xavier_35.2.1+')
-                ;;
-        esac
-        DT_CAM_FILE_DST_DIR=$KERNEL_SOURCE/hardware/nvidia/platform/t23x/p3768/kernel-dts/cvb/
-
         FLASH_DT='kernel-dtb'
-        case $VC_MIPI_SOM in
-        OrinNano)   FLASH_BOARD='jetson-orin-nano-devkit-nvme' ;;
-        esac
-        # FLASH_PARTITION='mmcblk0p1'
+        FLASH_BOARD='jetson-orin-nano-devkit-nvme'
         FLASH_PARTITION='nvme0n1p1'
-
-        case $VC_MIPI_BSP in
-        35.3.1)
-                PATCHES+=('dt_camera_OrinNano_35.3.1+')
-                ;;
-        esac
         ;;
 
 *)
@@ -254,7 +218,7 @@ OrinNano)
 esac
 
 # PATCHES+=('develop')
-
+echo "  Using build directory:                       $BSP_DIR"
 echo "  Using L4T Driver Package (BSP) URL:          $BSP_URL"
 echo "  Using L4T Driver Package (BSP) FILE:         $BSP_FILE"
 echo "  Using Sample Root Filesystem URL:            $RFS_URL"
