@@ -74,12 +74,7 @@
 #endif
 
 / {
-#if LINUX_VERSION < 500
-	host1x {
-        vc_vi_base: vi@15c10000 {
-#else
 	tegra-capture-vi  {
-#endif
 		num-channels = <VC_MIPI_CAMERAS>;
 		ports {
 			#address-cells = <1>;
@@ -107,13 +102,8 @@
 		}; // ports
 	};
 
-#if LINUX_VERSION < 500
-
-	vc_csi_base: nvcsi@15a00000 {
-#else
 	host1x@13e00000 {
 		nvcsi@15a00000 {
-#endif
 			num-channels = <VC_MIPI_CAMERAS>;
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -164,15 +154,8 @@
 				};
 			};
 #endif
-
-#if LINUX_VERSION >= 500
 		};
-#endif
 	};
-
-#if LINUX_VERSION < 500
-	};
-#endif
 
 	cam_i2cmux {
 #if VC_MIPI_CAM_0 == 1
@@ -215,14 +198,10 @@
 					active_t                 = "0";
 					active_w                 = "0";
 					active_h                 = "0";
-
-#if LINUX_VERSION < 500
-					pixel_t                  = "bayer_rggb";
-#else
 					mode_type                = "bayer";
 					pixel_phase              = "rggb";
 					csi_pixel_bit_depth      = "10";
-#endif
+
 					min_gain_val             = "0";         // mdB
 					max_gain_val             = "48000";     // mdB
 					step_gain_val            = "100";       // mdB
@@ -251,12 +230,7 @@
 					phy_mode                 = "DPHY";
 					discontinuous_clk        = "no";
 					mclk_khz                 = "24000";
-
-#if LINUX_VERSION < 500
-					pix_clk_hz               = "800000000";
-#else
 					pix_clk_hz               = "74250000";
-#endif
 					mclk_multiplier          = "9.33";
 					cil_settletime           = "0";
 					dpcm_enable              = "false";
@@ -318,14 +292,10 @@
 					active_t                 = "0";
 					active_w                 = "0";
 					active_h                 = "0";
-
-#if LINUX_VERSION < 500
-					pixel_t                  = "bayer_rggb";
-#else
 					mode_type                = "bayer";
 					pixel_phase              = "rggb";
 					csi_pixel_bit_depth      = "10";
-#endif
+
 					min_gain_val             = "0";         // mdB
 					max_gain_val             = "48000";     // mdB
 					step_gain_val            = "100";       // mdB
@@ -354,12 +324,7 @@
 					phy_mode                 = "DPHY";
 					discontinuous_clk        = "no";
 					mclk_khz                 = "24000";
-
-#if LINUX_VERSION < 500
-					pix_clk_hz               = "800000000";
-#else
 					pix_clk_hz               = "74250000";
-#endif
 					mclk_multiplier          = "9.33";
 					cil_settletime           = "0";
 					dpcm_enable              = "false";
